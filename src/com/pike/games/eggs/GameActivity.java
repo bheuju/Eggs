@@ -12,7 +12,6 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
-import org.andengine.engine.options.resolutionpolicy.RelativeResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
@@ -20,6 +19,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
+
+import com.pike.games.managers.ResourceManager;
 
 import android.util.Log;
 
@@ -32,9 +33,6 @@ public class GameActivity extends BaseGameActivity {
 
 	private Camera mCamera;
 	private Scene mScene;
-
-	Music mMusic;
-	Sound mSound;
 
 	// =========== CREATE ENGINE ===========
 	@Override
@@ -68,42 +66,19 @@ public class GameActivity extends BaseGameActivity {
 			OnCreateResourcesCallback pOnCreateResourcesCallback)
 			throws IOException {
 
-		// ----------------- Sound -----------------
-		// set search path for SoundFactory and MusicFactory
-		SoundFactory.setAssetBasePath("sfx/");
-		MusicFactory.setAssetBasePath("sfx/");
+		// setup resource manager
+		ResourceManager.getInstance().setup(this, getEngine(),
+				getApplicationContext(), mCamera);
 
-		// load sound.mp3 into sound object
-		try {
-			mSound = SoundFactory.createSoundFromAsset(getSoundManager(), this,
-					"bounce.mp3");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// load sounds
+		ResourceManager.getInstance().loadSounds();
 
-		// load music.ogg into music object
-		try {
-			mMusic = MusicFactory.createMusicFromAsset(getMusicManager(), this,
-					"music.ogg");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// load textures
+		ResourceManager.getInstance().loadGameTextures();
 
-		// ----------------- Textures -----------------
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/eggs/");
-
-		mBitmapTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 500,
-				500);
-		mRectangle1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				mBitmapTextureAtlas, this, "egg.png", 0, 0);
-		mBitmapTextureAtlas.load();
-		
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 
 	}
-
-	BitmapTextureAtlas mBitmapTextureAtlas;
-	ITextureRegion mRectangle1, mRectangle2;
 
 	// =========== CREATE SCENES ===========
 	@Override
@@ -122,7 +97,8 @@ public class GameActivity extends BaseGameActivity {
 			OnPopulateSceneCallback pOnPopulateSceneCallback)
 			throws IOException {
 
-		Sprite egg = new Sprite(100, 100, mRectangle1,
+		Sprite egg = new Sprite(200, 320,
+				ResourceManager.getInstance().mGameBgTR,
 				getVertexBufferObjectManager());
 		mScene.attachChild(egg);
 
@@ -133,6 +109,7 @@ public class GameActivity extends BaseGameActivity {
 	@Override
 	public synchronized void onResumeGame() {
 
+		Music mMusic = ResourceManager.getInstance().mMusic;
 		if (mMusic != null && !mMusic.isPlaying()) {
 			mMusic.play();
 			Log.d("Music", "Playing");
@@ -144,6 +121,7 @@ public class GameActivity extends BaseGameActivity {
 	@Override
 	public synchronized void onPauseGame() {
 
+		Music mMusic = ResourceManager.getInstance().mMusic;
 		if (mMusic != null && mMusic.isPlaying()) {
 			mMusic.pause();
 		}
