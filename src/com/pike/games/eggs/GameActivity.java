@@ -67,14 +67,10 @@ public class GameActivity extends BaseGameActivity {
 			throws IOException {
 
 		// setup resource manager
-		ResourceManager.getInstance().setup(this, getEngine(),
-				getApplicationContext(), mCamera);
+		ResourceManager.getInstance().setup(this, this.getEngine(), mCamera);
 
-		// load sounds
-		ResourceManager.getInstance().loadSounds();
-
-		// load textures
-		ResourceManager.getInstance().loadGameTextures();
+		// load gameResources
+		ResourceManager.getInstance().loadGameResources();
 
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 

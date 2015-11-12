@@ -48,22 +48,48 @@ public class ResourceManager {
 
 	private GameActivity activity;
 	private Engine engine;
-	private Context context;
 	private Camera camera;
 
 	// ================================
 	// Methods
 
-	// setup ResourceManager
-	public void setup(GameActivity activity, Engine engine, Context context,
-			Camera camera) {
+	/**
+	 * Setup ResourceManager
+	 * 
+	 * @param activity
+	 * @param engine
+	 * @param camera
+	 * 
+	 */
+	public void setup(GameActivity activity, Engine engine, Camera camera) {
 		this.activity = activity;
 		this.engine = engine;
-		this.context = context;
 		this.camera = camera;
 	}
 
-	public synchronized void loadGameTextures() {
+	// Getters and Setters for common resources
+	public Engine getEngine() {
+		return engine;
+	}
+
+	public void loadGameResources() {
+		loadGameTextures();
+		loadGameAudio();
+		loadGameFonts();
+	}
+
+	public void loadMenuResources() {
+		loadMenuTextures();
+		loadMenuAudio();
+		loadMenuFonts();
+	}
+
+	// =====================================
+	public void loadSplashScreen() {
+
+	}
+
+	public void loadGameTextures() {
 
 		// set base path
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/eggs/");
@@ -84,7 +110,7 @@ public class ResourceManager {
 
 	}
 
-	public synchronized void unloadGameTextures() {
+	public void unloadGameTextures() {
 		// unload textures
 		BuildableBitmapTextureAtlas mGameGbT = (BuildableBitmapTextureAtlas) mGameBgTR
 				.getTexture();
@@ -94,7 +120,15 @@ public class ResourceManager {
 		System.gc();
 	}
 
-	public synchronized void loadSounds() {
+	public void loadMenuTextures() {
+
+	}
+
+	public void unloadMenuTextures() {
+
+	}
+
+	public void loadGameAudio() {
 		// set search path for SoundFactory and MusicFactory
 		SoundFactory.setAssetBasePath("sfx/");
 		MusicFactory.setAssetBasePath("sfx/");
@@ -102,7 +136,7 @@ public class ResourceManager {
 		// load sound.mp3 into sound object
 		try {
 			mSound = SoundFactory.createSoundFromAsset(
-					activity.getSoundManager(), context, "bounce.mp3");
+					activity.getSoundManager(), activity, "bounce.mp3");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -110,24 +144,40 @@ public class ResourceManager {
 		// load music.ogg into music object
 		try {
 			mMusic = MusicFactory.createMusicFromAsset(
-					activity.getMusicManager(), context, "music.ogg");
+					activity.getMusicManager(), activity, "music.ogg");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public synchronized void unloadSounds() {
+	public void unGameAudio() {
 		if (!mSound.isReleased()) {
 			mSound.release();
 		}
 	}
 
-	public synchronized void loadFonts() {
+	public void loadMenuAudio() {
 
 	}
 
-	public synchronized void unloadFonts() {
+	public void unloadMenuAudio() {
+
+	}
+
+	public void loadGameFonts() {
+
+	}
+
+	public void unloadGameFonts() {
+
+	}
+
+	public void loadMenuFonts() {
+
+	}
+
+	public void unloadMenuFonts() {
 
 	}
 
