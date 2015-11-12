@@ -9,6 +9,8 @@ import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.FixedStepEngine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
@@ -21,6 +23,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import com.pike.games.managers.ResourceManager;
+import com.pike.games.managers.SceneManager;
 
 import android.util.Log;
 
@@ -70,7 +73,7 @@ public class GameActivity extends BaseGameActivity {
 		ResourceManager.getInstance().setup(this, this.getEngine(), mCamera);
 
 		// load gameResources
-		ResourceManager.getInstance().loadGameResources();
+		// ResourceManager.getInstance().loadGameResources();
 
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 
@@ -81,10 +84,10 @@ public class GameActivity extends BaseGameActivity {
 	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
 			throws IOException {
 
-		mScene = new Scene();
-		mScene.setBackground(new Background(0.09804f, 0.6274f, 0));
+		// create splash scene
+		SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
 
-		pOnCreateSceneCallback.onCreateSceneFinished(mScene);
+		// pOnCreateSceneCallback.onCreateSceneFinished(mScene);
 	}
 
 	// =========== POPULATE SCENE ===========
@@ -92,11 +95,6 @@ public class GameActivity extends BaseGameActivity {
 	public void onPopulateScene(Scene pScene,
 			OnPopulateSceneCallback pOnPopulateSceneCallback)
 			throws IOException {
-
-		Sprite egg = new Sprite(200, 320,
-				ResourceManager.getInstance().mGameBgTR,
-				getVertexBufferObjectManager());
-		mScene.attachChild(egg);
 
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 

@@ -1,7 +1,12 @@
 package com.pike.games.managers;
 
 import org.andengine.engine.Engine;
-import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
+
+import Scenes.SplashScene;
+
+import android.util.Log;
 
 import com.pike.games.eggs.BaseScene;
 
@@ -62,6 +67,24 @@ public class SceneManager {
 		default:
 			break;
 		}
+	}
+
+	// Scenes methods
+	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
+
+		ResourceManager.getInstance().loadSplashResources();
+
+		splashScene = new SplashScene();
+		mCurrentScene = splashScene;
+
+		pOnCreateSceneCallback.onCreateSceneFinished(splashScene);
+
+	}
+
+	public void disposeSplashScene() {
+		ResourceManager.getInstance().unloadSplashScreen();
+		splashScene.disposeScene();
+		splashScene = null;
 	}
 
 	// Getters and Setters
