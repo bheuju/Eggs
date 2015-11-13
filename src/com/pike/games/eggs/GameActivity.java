@@ -3,9 +3,7 @@ package com.pike.games.eggs;
 import java.io.IOException;
 
 import org.andengine.audio.music.Music;
-import org.andengine.audio.music.MusicFactory;
-import org.andengine.audio.sound.Sound;
-import org.andengine.audio.sound.SoundFactory;
+
 import org.andengine.engine.Engine;
 import org.andengine.engine.FixedStepEngine;
 import org.andengine.engine.camera.Camera;
@@ -15,17 +13,13 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import com.pike.games.managers.ResourceManager;
 import com.pike.games.managers.SceneManager;
 
 import android.util.Log;
+import android.view.KeyEvent;
 
 // Main Activity for the game
 
@@ -119,7 +113,7 @@ public class GameActivity extends BaseGameActivity {
 			mMusic.play();
 			Log.d("Music", "Playing");
 		}
-		
+
 		super.onResumeGame();
 	}
 
@@ -132,6 +126,21 @@ public class GameActivity extends BaseGameActivity {
 		}
 
 		super.onPauseGame();
+	}
+
+	@Override
+	protected void onDestroy() {
+		System.exit(0);
+		super.onDestroy();
+	}
+
+	// Handling back key press
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 }
