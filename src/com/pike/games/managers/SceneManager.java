@@ -4,6 +4,7 @@ import org.andengine.engine.Engine;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
+import Scenes.MainMenuScene;
 import Scenes.SplashScene;
 
 import android.util.Log;
@@ -75,7 +76,8 @@ public class SceneManager {
 		ResourceManager.getInstance().loadSplashResources();
 
 		splashScene = new SplashScene();
-		mCurrentScene = splashScene;
+		// mCurrentScene = splashScene;
+		setScene(splashScene);
 
 		pOnCreateSceneCallback.onCreateSceneFinished(splashScene);
 
@@ -85,6 +87,14 @@ public class SceneManager {
 		ResourceManager.getInstance().unloadSplashScreen();
 		splashScene.disposeScene();
 		splashScene = null;
+	}
+
+	public void createMenuScene() {
+		ResourceManager.getInstance().loadMenuResources();
+		menusScene = new MainMenuScene();
+		setScene(menusScene);
+
+		disposeSplashScene();
 	}
 
 	// Getters and Setters

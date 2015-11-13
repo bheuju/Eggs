@@ -19,6 +19,8 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import android.graphics.BitmapShader;
+
 import com.pike.games.eggs.GameActivity;
 
 public class ResourceManager {
@@ -44,9 +46,6 @@ public class ResourceManager {
 
 	public Font mFont;
 
-	public ITextureRegion mGameBgTR;
-	public ITextureRegion mSplashTR;
-
 	private GameActivity activity;
 	private Engine engine;
 	private Camera camera;
@@ -61,6 +60,15 @@ public class ResourceManager {
 
 	private String pathSfxGame = "sfx/game/";
 	private String pathSfxMenu = "sfx/menu/";
+
+	// Texture Regions
+	public ITextureRegion mGameBgTR;
+	public ITextureRegion mSplashTR;
+
+	public ITextureRegion mMenuBgTR;
+	public ITextureRegion mMenuPlayTR;
+	public ITextureRegion mMenuOptionsTR;
+	public ITextureRegion mMenuLogoTR;
 
 	// ================================
 	// Methods
@@ -161,11 +169,38 @@ public class ResourceManager {
 	}
 
 	public void loadMenuTextures() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(pathGfxMenu);
+		BuildableBitmapTextureAtlas mMenuTA = new BuildableBitmapTextureAtlas(
+				texManager, 512, 1024);
+
+		mMenuLogoTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				mMenuTA, activity, "logo.png");
+		mMenuBgTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				mMenuTA, activity, "bg.png");
+		mMenuPlayTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				mMenuTA, activity, "play.png");
+		mMenuOptionsTR = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(mMenuTA, activity, "options.png");
+
+		try {
+			mMenuTA.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+					0, 1, 1));
+			mMenuTA.load();
+		} catch (TextureAtlasBuilderException e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	public void unloadMenuTextures() {
+		BuildableBitmapTextureAtlas mMenuTA = (BuildableBitmapTextureAtlas) mMenuPlayTR
+				.getTexture();
+		mMenuTA.unload();
 
+		mMenuTA = (BuildableBitmapTextureAtlas) mMenuOptionsTR.getTexture();
+		mMenuTA.unload();
+
+		System.gc();
 	}
 
 	public void loadGameAudio() {
@@ -232,6 +267,10 @@ public class ResourceManager {
 
 	public VertexBufferObjectManager getVertexBufferObjectManager() {
 		return vboManager;
+	}
+
+	public Camera getCamera() {
+		return camera;
 	}
 
 }

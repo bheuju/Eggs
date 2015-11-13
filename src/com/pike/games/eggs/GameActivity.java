@@ -52,7 +52,7 @@ public class GameActivity extends BaseGameActivity {
 
 		// define engine options to be applied to engine object
 		EngineOptions engineOptions = new EngineOptions(true,
-				ScreenOrientation.PORTRAIT_SENSOR, new RatioResolutionPolicy(
+				ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(
 						CAMERA_WIDTH, CAMERA_HEIGHT), mCamera);
 
 		// enable sounds and music
@@ -96,6 +96,17 @@ public class GameActivity extends BaseGameActivity {
 			OnPopulateSceneCallback pOnPopulateSceneCallback)
 			throws IOException {
 
+		mEngine.registerUpdateHandler(new TimerHandler(2f,
+				new ITimerCallback() {
+
+					@Override
+					public void onTimePassed(TimerHandler pTimerHandler) {
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+						SceneManager.getInstance().createMenuScene();
+
+					}
+				}));
+
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 
 	}
@@ -108,7 +119,7 @@ public class GameActivity extends BaseGameActivity {
 			mMusic.play();
 			Log.d("Music", "Playing");
 		}
-
+		
 		super.onResumeGame();
 	}
 
