@@ -141,7 +141,7 @@ public class GameActivity extends BaseGameActivity {
 			SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
 		}
 		return false;
-		// return super.onKeyDown(keyCode, event);
+		//return super.onKeyDown(keyCode, event);
 	}
 
 }
