@@ -11,6 +11,7 @@ import org.andengine.entity.sprite.Sprite;
 import android.util.Log;
 
 import com.pike.games.eggs.BaseScene;
+import com.pike.games.managers.SceneManager;
 import com.pike.games.managers.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene {
@@ -66,6 +67,7 @@ public class MainMenuScene extends BaseScene {
 						switch (pMenuItem.getID()) {
 						case MENU_PLAY:
 							Log.e("Menu Clicked", "PLAY");
+							SceneManager.getInstance().loadGameScene();
 							return true;
 						case MENU_OPTIONS:
 							Log.e("Menu Clicked", "OPTIONS");

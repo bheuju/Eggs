@@ -1,9 +1,13 @@
 package com.pike.games.managers;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
+import Scenes.GameScene;
+import Scenes.LoadingScene;
 import Scenes.MainMenuScene;
 import Scenes.SplashScene;
 
@@ -29,7 +33,7 @@ public class SceneManager {
 
 	// Scenes
 	private BaseScene splashScene;
-	private BaseScene menusScene;
+	private BaseScene menuScene;
 	private BaseScene gameScene;
 	private BaseScene loadingScene;
 
@@ -54,13 +58,13 @@ public class SceneManager {
 	public void setScene(SceneType sceneType) {
 		switch (sceneType) {
 		case SCENE_GAME:
-			setScene(menusScene);
+			setScene(menuScene);
 			break;
 		case SCENE_LOADING:
 			setScene(loadingScene);
 			break;
 		case SCENE_MENU:
-			setScene(menusScene);
+			setScene(menuScene);
 			break;
 		case SCENE_SPLASH:
 			setScene(splashScene);
@@ -91,10 +95,29 @@ public class SceneManager {
 
 	public void createMenuScene() {
 		ResourceManager.getInstance().loadMenuResources();
-		menusScene = new MainMenuScene();
-		setScene(menusScene);
+		menuScene = new MainMenuScene();
+		loadingScene = new LoadingScene();
+		setScene(menuScene);
 
 		disposeSplashScene();
+	}
+
+	public void loadGameScene() {
+		setScene(loadingScene);
+		ResourceManager.getInstance().unloadMenuTextures();
+
+		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
+				new ITimerCallback() {
+
+					@Override
+					public void onTimePassed(TimerHandler pTimerHandler) {
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+						ResourceManager.getInstance().loadGameResources();
+						gameScene = new GameScene();
+						setScene(gameScene);
+
+					}
+				}));
 	}
 
 	// Getters and Setters

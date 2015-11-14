@@ -9,6 +9,8 @@ import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -20,6 +22,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import android.graphics.BitmapShader;
+import android.graphics.Color;
 
 import com.pike.games.eggs.GameActivity;
 
@@ -61,6 +64,8 @@ public class ResourceManager {
 	private String pathSfxGame = "sfx/game/";
 	private String pathSfxMenu = "sfx/menu/";
 
+	private String pathFonts = "fonts/";
+
 	// Texture Regions
 	public ITextureRegion mGameBgTR;
 	public ITextureRegion mSplashTR;
@@ -90,10 +95,9 @@ public class ResourceManager {
 		this.vboManager = activity.getVertexBufferObjectManager();
 	}
 
-	public void loadGameResources() {
-		loadGameTextures();
-		loadGameAudio();
-		loadGameFonts();
+	public void loadSplashResources() {
+		loadSplashTexture();
+		loadSplashAudio();
 	}
 
 	public void loadMenuResources() {
@@ -102,12 +106,15 @@ public class ResourceManager {
 		loadMenuFonts();
 	}
 
-	public void loadSplashResources() {
-		loadSplashTexture();
-		loadSplashAudio();
+	public void loadGameResources() {
+		loadGameTextures();
+		loadGameAudio();
+		loadGameFonts();
 	}
 
 	// =====================================
+	// ---- SPLASH ----
+
 	public void loadSplashTexture() {
 
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(pathGfxSplash);
@@ -126,7 +133,7 @@ public class ResourceManager {
 		}
 	}
 
-	public synchronized void unloadSplashScreen() {
+	public void unloadSplashScreen() {
 		// unload texture
 		BuildableBitmapTextureAtlas mSplashTA = (BuildableBitmapTextureAtlas) mSplashTR
 				.getTexture();
@@ -136,38 +143,11 @@ public class ResourceManager {
 		System.gc();
 	}
 
-	public void loadGameTextures() {
-
-		// set base path
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(pathGfxGame);
-
-		// load textures
-		BuildableBitmapTextureAtlas mGameBgTA = new BuildableBitmapTextureAtlas(
-				texManager, 480, 640);
-		mGameBgTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				mGameBgTA, activity, "bg.png");
-
-		try {
-			mGameBgTA
-					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
-							0, 1, 1));
-			mGameBgTA.load();
-		} catch (TextureAtlasBuilderException e) {
-			e.printStackTrace();
-		}
+	public void loadSplashAudio() {
 
 	}
 
-	public void unloadGameTextures() {
-		// unload textures
-		BuildableBitmapTextureAtlas mGameBgTA = (BuildableBitmapTextureAtlas) mGameBgTR
-				.getTexture();
-		mGameBgTA.unload();
-
-		// once all textures have been unloaded, try to invoke garbage collector
-		System.gc();
-	}
-
+	// ---- MENU ----
 	public void loadMenuTextures() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(pathGfxMenu);
 		BuildableBitmapTextureAtlas mMenuTA = new BuildableBitmapTextureAtlas(
@@ -203,6 +183,61 @@ public class ResourceManager {
 		System.gc();
 	}
 
+	public void loadMenuAudio() {
+
+	}
+
+	public void unloadMenuAudio() {
+
+	}
+
+	public void loadMenuFonts() {
+		FontFactory.setAssetBasePath(pathFonts);
+		final ITexture mFontTA = new BitmapTextureAtlas(texManager, 256, 256);
+
+		mFont = FontFactory.createStrokeFromAsset(activity.getFontManager(),
+				mFontTA, activity.getAssets(), "font.ttf", 50, true,
+				Color.GRAY, 2, Color.BLACK);
+		mFont.load();
+	}
+
+	public void unloadMenuFonts() {
+		mFont.unload();
+	}
+
+	// ---- GAME ----
+	public void loadGameTextures() {
+
+		// set base path
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(pathGfxGame);
+
+		// load textures
+		BuildableBitmapTextureAtlas mGameBgTA = new BuildableBitmapTextureAtlas(
+				texManager, 480, 640);
+		mGameBgTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				mGameBgTA, activity, "bg.png");
+
+		try {
+			mGameBgTA
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 1));
+			mGameBgTA.load();
+		} catch (TextureAtlasBuilderException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void unloadGameTextures() {
+		// unload textures
+		BuildableBitmapTextureAtlas mGameBgTA = (BuildableBitmapTextureAtlas) mGameBgTR
+				.getTexture();
+		mGameBgTA.unload();
+
+		// once all textures have been unloaded, try to invoke garbage collector
+		System.gc();
+	}
+
 	public void loadGameAudio() {
 		// set search path for SoundFactory and MusicFactory
 		SoundFactory.setAssetBasePath("sfx/");
@@ -232,18 +267,6 @@ public class ResourceManager {
 		}
 	}
 
-	public void loadSplashAudio() {
-
-	}
-
-	public void loadMenuAudio() {
-
-	}
-
-	public void unloadMenuAudio() {
-
-	}
-
 	public void loadGameFonts() {
 
 	}
@@ -252,14 +275,7 @@ public class ResourceManager {
 
 	}
 
-	public void loadMenuFonts() {
-
-	}
-
-	public void unloadMenuFonts() {
-
-	}
-
+	// =====================================
 	// Getters and Setters for common resources
 	public Engine getEngine() {
 		return engine;
