@@ -53,6 +53,7 @@ public class SceneManager {
 		mCurrentScene = scene;
 		mEngine.setScene(mCurrentScene);
 		mCurrentSceneType = scene.getSceneType();
+		Log.e("Scene is: ", mCurrentSceneType.toString());
 	}
 
 	public void setScene(SceneType sceneType) {
@@ -115,9 +116,28 @@ public class SceneManager {
 						ResourceManager.getInstance().loadGameResources();
 						gameScene = new GameScene();
 						setScene(gameScene);
+					}
+				}));
+	}
+
+	public synchronized void loadMenuScene() {
+		setScene(loadingScene);
+		gameScene.disposeScene();
+		ResourceManager.getInstance().unloadGameTextures();
+
+		mEngine.registerUpdateHandler(new TimerHandler(2f,
+				new ITimerCallback() {
+
+					@Override
+					public void onTimePassed(TimerHandler pTimerHandler) {
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+						ResourceManager.getInstance().loadMenuTextures();
+						menuScene = new MainMenuScene();
+						setScene(menuScene);
 
 					}
 				}));
+
 	}
 
 	// Getters and Setters

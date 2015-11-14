@@ -136,11 +136,12 @@ public class GameActivity extends BaseGameActivity {
 
 	// Handling back key press
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	public synchronized boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
 		}
-		return super.onKeyDown(keyCode, event);
+		return false;
+		// return super.onKeyDown(keyCode, event);
 	}
 
 }
