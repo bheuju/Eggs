@@ -21,7 +21,7 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import android.graphics.BitmapShader;
+import android.app.Activity;
 import android.graphics.Color;
 
 import com.pike.games.eggs.GameActivity;
@@ -286,6 +286,10 @@ public class ResourceManager {
 
 	// =====================================
 	// Getters and Setters for common resources
+	public GameActivity getActivity() {
+		return activity;
+	}
+
 	public Engine getEngine() {
 		return engine;
 	}

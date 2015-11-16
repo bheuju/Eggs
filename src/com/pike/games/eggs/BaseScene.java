@@ -12,12 +12,14 @@ public abstract class BaseScene extends Scene {
 	protected ResourceManager mResourceManager;
 	protected VertexBufferObjectManager mVboManager;
 	protected Camera mCamera;
+	protected GameActivity mActivity;
 
 	public BaseScene() {
 		this.mResourceManager = ResourceManager.getInstance();
 		this.mVboManager = ResourceManager.getInstance()
 				.getVertexBufferObjectManager();
 		this.mCamera = ResourceManager.getInstance().getCamera();
+		this.mActivity = ResourceManager.getInstance().getActivity();
 		createScene();
 	}
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level width="400" height="640">
+	<entity x="200" y="150" type="nest" scroll="false"/>
+	<entity x="200" y="300" type="nest" scroll="true"/>
+	<entity x="350" y="450" type="nest" scroll="true"/>
+</level>
