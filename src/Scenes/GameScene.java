@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.primitive.DrawMode;
 import org.andengine.entity.primitive.Mesh;
 import org.andengine.entity.scene.IOnSceneTouchListener;
@@ -40,21 +41,34 @@ public class GameScene extends BaseScene {
 	private Body eggBody;
 	private Body nestBody;
 
+	private float nestX;
+	private float nestY;
+
 	private void createPhysics() {
 		mPhysicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17),
 				false);
 		this.registerUpdateHandler(mPhysicsWorld);
 
 		final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.1f,
-				0.5f);
-		final Sprite eggSprite = new Sprite(200, 500, mResourceManager.mEggTR,
-				mVboManager);
+				0.3f);
+
+		final Sprite nestSprite = new Sprite(200, 150,
+				mResourceManager.mNestTR, mVboManager);
+		final Sprite nestFrontSprite = new Sprite(200, 150,
+				mResourceManager.mNestFrontTR, mVboManager);
+		final Sprite eggSprite = new Sprite(200, 160, mResourceManager.mEggTR,
+				mVboManager) {
+			@Override
+			protected void onManagedUpdate(float pSecondsElapsed) {
+				if (getY() < 0) {
+					Log.d("Game Condition", "GAME IS OVER :(");
+				}
+				super.onManagedUpdate(pSecondsElapsed);
+			}
+		};
 		eggBody = PhysicsFactory.createCircleBody(mPhysicsWorld, eggSprite,
 				BodyType.DynamicBody, FIXTURE_DEF);
 		eggBody.setUserData("egg");
-
-		Sprite nestSprite = new Sprite(200, 150, mResourceManager.mNestTR,
-				mVboManager);
 
 		List<Vector2> nestBodyVertices = new ArrayList<Vector2>();
 
@@ -88,8 +102,8 @@ public class GameScene extends BaseScene {
 		// nestBodyMesh.setColor(1f, 0f, 0f);
 
 		nestBody = PhysicsFactory.createTrianglulatedBody(mPhysicsWorld,
-				nestSprite, nestBodyVerticesTriangulated, BodyType.StaticBody,
-				FIXTURE_DEF);
+				nestSprite, nestBodyVerticesTriangulated,
+				BodyType.KinematicBody, FIXTURE_DEF);
 
 		nestBody.setUserData("nest");
 
@@ -98,30 +112,70 @@ public class GameScene extends BaseScene {
 		mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(eggSprite,
 				eggBody));
 
-		Sprite nestFrontSprite = new Sprite(200, 150,
-				mResourceManager.mNestFrontTR, mVboManager);
+		nestX = 100f;
+		nestY = 400f;
+
+		Sprite nest2 = new Sprite(nestX, nestY, mResourceManager.mNestTR,
+				mVboManager);
+		attachChild(nest2);
 
 		this.attachChild(nestSprite);
 		this.attachChild(eggSprite);
 		this.attachChild(nestFrontSprite);
 		// this.attachChild(nestBodyMesh);
 
-		setOnSceneTouchListener(new IOnSceneTouchListener() {
+		this.setOnSceneTouchListener(new IOnSceneTouchListener() {
 
 			@Override
 			public boolean onSceneTouchEvent(Scene pScene,
 					TouchEvent pSceneTouchEvent) {
 				if (pSceneTouchEvent.isActionDown()) {
-					jump();
+					jumpEgg();
 				}
 				return false;
 			}
 		});
+
+		float nestRelativeMinX = -200f;
+		float nestRelativeMaxX = 200f;
+		final float nestVelocity = 3f;
+		final float nestMinXWC = (nestSprite.getX() + nestRelativeMinX)
+				/ PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
+		final float nestMaxXWC = (nestSprite.getX() + nestRelativeMaxX)
+				/ PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
+		nestBody.setLinearVelocity(nestVelocity, 0f);
+
+		this.registerUpdateHandler(new IUpdateHandler() {
+
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				if (nestBody.getWorldCenter().x > nestMaxXWC) {
+					nestBody.setTransform(nestMaxXWC,
+							nestBody.getWorldCenter().y, nestBody.getAngle());
+					nestBody.setLinearVelocity(-nestVelocity, 0f);
+				} else if (nestBody.getWorldCenter().x < nestMinXWC) {
+					nestBody.setTransform(nestMinXWC,
+							nestBody.getWorldCenter().y, nestBody.getAngle());
+					nestBody.setLinearVelocity(nestVelocity, 0f);
+				}
+
+				// update nestFront as nest updates
+				nestFrontSprite.setPosition(nestSprite.getX(),
+						nestSprite.getY());
+			}
+
+			@Override
+			public void reset() {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
 	}
 
-	private void jump() {
-		eggBody.setLinearVelocity(new Vector2(
-				eggBody.getLinearVelocity().x + 0.05f, 12));
+	private void jumpEgg() {
+		mResourceManager.mSound.play();
+		eggBody.setLinearVelocity(new Vector2(eggBody.getLinearVelocity().x, 15));
 	}
 
 	private void createHUD() {
@@ -129,7 +183,7 @@ public class GameScene extends BaseScene {
 
 		// create lifeCount text
 		lifeText = new Text(20, 600, mResourceManager.mFont,
-				"Score: 0123456789", mVboManager);
+				"Life: 0123456789", mVboManager);
 		lifeText.setAnchorCenter(0, 0);
 		lifeText.setText("Life: 3");
 		gameHUD.attachChild(lifeText);
@@ -138,7 +192,7 @@ public class GameScene extends BaseScene {
 	}
 
 	private void setLifeCount(int life) {
-		lifeText.setText("Score: " + lifeCount);
+		lifeText.setText("Life: " + lifeCount);
 	}
 
 	private void createBackGround() {
