@@ -67,13 +67,17 @@ public class ResourceManager {
 	private String pathFonts = "fonts/";
 
 	// Texture Regions
-	public ITextureRegion mGameBgTR;
 	public ITextureRegion mSplashTR;
 
 	public ITextureRegion mMenuBgTR;
 	public ITextureRegion mMenuPlayTR;
 	public ITextureRegion mMenuOptionsTR;
 	public ITextureRegion mMenuLogoTR;
+
+	public ITextureRegion mGameBgTR;
+	public ITextureRegion mEggTR;
+	public ITextureRegion mNestTR;
+	public ITextureRegion mNestFrontTR;
 
 	// ================================
 	// Methods
@@ -212,16 +216,21 @@ public class ResourceManager {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(pathGfxGame);
 
 		// load textures
-		BuildableBitmapTextureAtlas mGameBgTA = new BuildableBitmapTextureAtlas(
+		BuildableBitmapTextureAtlas mGameTA = new BuildableBitmapTextureAtlas(
 				texManager, 480, 640);
 		mGameBgTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				mGameBgTA, activity, "bg.png");
+				mGameTA, activity, "bg.png");
+		mNestTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				mGameTA, activity, "nest.png");
+		mEggTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				mGameTA, activity, "egg.png");
+		mNestFrontTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				mGameTA, activity, "nestFront.png");
 
 		try {
-			mGameBgTA
-					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
-							0, 1, 1));
-			mGameBgTA.load();
+			mGameTA.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+					0, 1, 1));
+			mGameTA.load();
 		} catch (TextureAtlasBuilderException e) {
 			e.printStackTrace();
 		}

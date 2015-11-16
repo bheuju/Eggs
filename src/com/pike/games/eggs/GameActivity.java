@@ -34,7 +34,7 @@ public class GameActivity extends BaseGameActivity {
 	// =========== CREATE ENGINE ===========
 	@Override
 	public Engine onCreateEngine(EngineOptions pEngineOptions) {
-		return new FixedStepEngine(pEngineOptions, 50);
+		return new FixedStepEngine(pEngineOptions, 60);
 	}
 
 	// =========== CREATE ENGINE OPTIONS ===========
@@ -141,7 +141,7 @@ public class GameActivity extends BaseGameActivity {
 			SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
 		}
 		return false;
-		//return super.onKeyDown(keyCode, event);
+		// return super.onKeyDown(keyCode, event);
 	}
 
 }
