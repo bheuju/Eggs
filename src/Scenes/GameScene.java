@@ -52,7 +52,7 @@ public class GameScene extends BaseScene {
 	private FixedStepPhysicsWorld mPhysicsWorld;
 
 	private Body eggBody;
-	private Body nestBody;
+	// private Body nestBody;
 
 	// Level Loader tags
 	private static final String TAG_ENTITY = "entity";
@@ -82,8 +82,8 @@ public class GameScene extends BaseScene {
 
 		float[] MeshTriangles = new float[nestBodyVerticesTriangulated.size() * 3];
 		for (int i = 0; i < nestBodyVerticesTriangulated.size(); i++) {
-			MeshTriangles[i * 3] = nestBodyVerticesTriangulated.get(i).x;
-			MeshTriangles[i * 3 + 1] = nestBodyVerticesTriangulated.get(i).y;
+			// MeshTriangles[i * 3] = nestBodyVerticesTriangulated.get(i).x;
+			// MeshTriangles[i * 3 + 1] = nestBodyVerticesTriangulated.get(i).y;
 			nestBodyVerticesTriangulated.get(i).mul(
 					1 / PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT);
 		}
@@ -142,6 +142,7 @@ public class GameScene extends BaseScene {
 
 						final Sprite levelObject;
 						final Body levelObjectBody;
+						final Sprite nestFrontSprite;
 
 						if (type.equals("nest")) {
 							levelObject = new Sprite(x, y,
@@ -154,6 +155,9 @@ public class GameScene extends BaseScene {
 							mPhysicsWorld
 									.registerPhysicsConnector(new PhysicsConnector(
 											levelObject, levelObjectBody));
+
+							nestFrontSprite = new Sprite(x, y,
+									mResourceManager.mNestFrontTR, mVboManager);
 						} else {
 							throw new IllegalArgumentException();
 						}
@@ -192,6 +196,10 @@ public class GameScene extends BaseScene {
 																0f);
 											}
 
+											nestFrontSprite.setPosition(
+													levelObject.getX(),
+													levelObject.getY());
+
 										}
 									});
 						} else {
@@ -199,6 +207,11 @@ public class GameScene extends BaseScene {
 						}
 
 						levelObject.setCullingEnabled(true);
+
+						nestFrontSprite.setZIndex(3);
+						GameScene.this.attachChild(nestFrontSprite);
+
+						levelObject.setZIndex(1);
 
 						return levelObject;
 					}
@@ -217,10 +230,10 @@ public class GameScene extends BaseScene {
 		final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.1f,
 				0.3f);
 
-		final Sprite nestSprite = new Sprite(200, 150,
-				mResourceManager.mNestTR, mVboManager);
-		final Sprite nestFrontSprite = new Sprite(200, 150,
-				mResourceManager.mNestFrontTR, mVboManager);
+		// final Sprite nestSprite = new Sprite(200, 150,
+		// mResourceManager.mNestTR, mVboManager);
+		// final Sprite nestFrontSprite = new Sprite(200, 150,
+		// mResourceManager.mNestFrontTR, mVboManager);
 		final Sprite eggSprite = new Sprite(200, 160, mResourceManager.mEggTR,
 				mVboManager) {
 			@Override
@@ -266,16 +279,20 @@ public class GameScene extends BaseScene {
 		// mVboManager);
 		// nestBodyMesh.setColor(1f, 0f, 0f);
 
-		nestBody = PhysicsFactory.createTrianglulatedBody(mPhysicsWorld,
-				nestSprite, nestBodyVerticesTriangulated,
-				BodyType.KinematicBody, FIXTURE_DEF);
+		// nestBody = PhysicsFactory.createTrianglulatedBody(mPhysicsWorld,
+		// nestSprite, nestBodyVerticesTriangulated,
+		// BodyType.KinematicBody, FIXTURE_DEF);
 
-		nestBody.setUserData("nest");
+		// nestBody.setUserData("nest");
 
-		mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(nestSprite,
-				nestBody));
+		// mPhysicsWorld.registerPhysicsConnector(new
+		// PhysicsConnector(nestSprite,
+		// nestBody));
 		mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(eggSprite,
 				eggBody));
+
+		// ZIndex
+		eggSprite.setZIndex(2);
 
 		// this.attachChild(nestSprite);
 		this.attachChild(eggSprite);
@@ -362,6 +379,7 @@ public class GameScene extends BaseScene {
 		createHUD();
 		createPhysics();
 		loadLevel(1);
+		sortChildren();
 	}
 
 	@Override
