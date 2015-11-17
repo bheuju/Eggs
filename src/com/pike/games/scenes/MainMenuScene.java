@@ -1,4 +1,4 @@
-package Scenes;
+package com.pike.games.scenes;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.menu.MenuScene;

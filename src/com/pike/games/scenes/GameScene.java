@@ -1,4 +1,4 @@
-package Scenes;
+package com.pike.games.scenes;
 
 import java.io.IOException;
 import java.util.ArrayList;

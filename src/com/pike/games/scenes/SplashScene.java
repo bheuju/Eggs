@@ -1,4 +1,4 @@
-package Scenes;
+package com.pike.games.scenes;
 
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;

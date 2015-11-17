@@ -6,14 +6,14 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
-import Scenes.GameScene;
-import Scenes.LoadingScene;
-import Scenes.MainMenuScene;
-import Scenes.SplashScene;
 
 import android.util.Log;
 
 import com.pike.games.eggs.BaseScene;
+import com.pike.games.scenes.GameScene;
+import com.pike.games.scenes.LoadingScene;
+import com.pike.games.scenes.MainMenuScene;
+import com.pike.games.scenes.SplashScene;
 
 public class SceneManager {
 
