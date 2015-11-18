@@ -42,6 +42,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.pike.games.eggs.BaseScene;
 import com.pike.games.managers.SceneManager;
 import com.pike.games.managers.SceneManager.SceneType;
+import com.pike.games.menus.PauseMenu;
 
 public class GameScene extends BaseScene {
 
@@ -53,6 +54,7 @@ public class GameScene extends BaseScene {
 
 	private Body eggBody;
 	// private Body nestBody;
+	Sprite eggSprite;
 
 	// Level Loader tags
 	private static final String TAG_ENTITY = "entity";
@@ -234,8 +236,7 @@ public class GameScene extends BaseScene {
 		// mResourceManager.mNestTR, mVboManager);
 		// final Sprite nestFrontSprite = new Sprite(200, 150,
 		// mResourceManager.mNestFrontTR, mVboManager);
-		final Sprite eggSprite = new Sprite(200, 160, mResourceManager.mEggTR,
-				mVboManager) {
+		eggSprite = new Sprite(200, 160, mResourceManager.mEggTR, mVboManager) {
 			@Override
 			protected void onManagedUpdate(float pSecondsElapsed) {
 				if (getY() < 0) {
@@ -369,6 +370,10 @@ public class GameScene extends BaseScene {
 		lifeText.setText("Life: " + lifeCount);
 	}
 
+	public void resetGame() {
+		Log.e("RESET", "Warning Game LEVEL RESET");
+	}
+
 	private void createBackGround() {
 		setBackground(new Background(Color.CYAN));
 	}
@@ -385,7 +390,13 @@ public class GameScene extends BaseScene {
 	@Override
 	public void onBackKeyPressed() {
 		Log.e("Back", "Game back pressed");
-		SceneManager.getInstance().loadMenuScene();
+		// SceneManager.getInstance().loadMenuScene();
+
+		// attach pauseMenu scene
+		// pauses game updates too due to additional parameters set
+		Scene pauseMenu = new PauseMenu();
+		setChildScene(pauseMenu, false, true, true);
+
 	}
 
 	@Override

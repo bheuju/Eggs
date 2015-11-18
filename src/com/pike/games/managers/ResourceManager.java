@@ -16,6 +16,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -69,14 +70,20 @@ public class ResourceManager {
 	private String pathFonts = "fonts/";
 
 	// Texture Regions
+	// =================
+	// splash
 	public ITextureRegion mSplashTR;
-
+	// main menu
 	public ITextureRegion mMenuBgTR;
 	public ITextureRegion mMenuPlayTR;
 	public ITextureRegion mMenuSettingsTR;
-	// public ITextureRegion mMenuLogoTR;
 	public ITextureRegion mMenuCreditsTR;
-
+	// pause menu
+	public ITextureRegion mPauseMenuBoardTR;
+	public ITextureRegion mPauseMenuPlayButtonTR;
+	public ITextureRegion mPauseMenuReloadButtonTR;
+	public ITextureRegion mPauseMenuMenuButtonTR;
+	// game
 	public ITextureRegion mGameBgTR;
 	public ITextureRegion mEggTR;
 	public ITextureRegion mNestTR;
@@ -241,6 +248,30 @@ public class ResourceManager {
 			e.printStackTrace();
 		}
 
+		// pause menu textures
+		BitmapTextureAtlasTextureRegionFactory
+				.setAssetBasePath(pathGfxPauseMenu);
+
+		BuildableBitmapTextureAtlas mPauseMenuTA = new BuildableBitmapTextureAtlas(
+				texManager, 512, 256);
+		mPauseMenuBoardTR = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(mPauseMenuTA, activity, "pause-menu-board.png");
+		mPauseMenuPlayButtonTR = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(mPauseMenuTA, activity, "play.png");
+		mPauseMenuReloadButtonTR = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(mPauseMenuTA, activity, "reload.png");
+		mPauseMenuMenuButtonTR = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(mPauseMenuTA, activity, "menu.png");
+
+		try {
+			mPauseMenuTA
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 1));
+			mPauseMenuTA.load();
+		} catch (TextureAtlasBuilderException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void unloadGameTextures() {
@@ -251,6 +282,12 @@ public class ResourceManager {
 
 		// once all textures have been unloaded, try to invoke garbage collector
 		System.gc();
+	}
+
+	public void unloadPauseMenuTextures() {
+		BuildableBitmapTextureAtlas mPauseMenuTA = (BuildableBitmapTextureAtlas) mPauseMenuBoardTR
+				.getTexture();
+		mPauseMenuTA.unload();
 	}
 
 	public void loadGameAudio() {

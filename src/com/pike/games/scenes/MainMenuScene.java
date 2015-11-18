@@ -1,32 +1,11 @@
 package com.pike.games.scenes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.andengine.engine.camera.Camera;
-import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.engine.handler.IUpdateHandler.IUpdateHandlerMatcher;
-import org.andengine.entity.IEntity;
-import org.andengine.entity.IEntityComparator;
-import org.andengine.entity.IEntityMatcher;
-import org.andengine.entity.IEntityParameterCallable;
-import org.andengine.entity.modifier.IEntityModifier;
-import org.andengine.entity.modifier.IEntityModifier.IEntityModifierMatcher;
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.shader.ShaderProgram;
-import org.andengine.opengl.util.GLState;
-import org.andengine.opengl.vbo.IVertexBufferObject;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.IDisposable.AlreadyDisposedException;
-import org.andengine.util.adt.color.Color;
-import org.andengine.util.adt.transformation.Transformation;
 
 import android.util.Log;
 
@@ -44,7 +23,7 @@ public class MainMenuScene extends BaseScene {
 	private void createBackground() {
 		Sprite bg = new Sprite(200, 320, mResourceManager.mMenuBgTR,
 				mVboManager);
-		//bg.setScale(1.5625f);
+		// bg.setScale(1.5625f);
 		this.attachChild(bg);
 	}
 
