@@ -59,7 +59,9 @@ public class ResourceManager {
 	// Paths
 	private String pathGfxSplash = "gfx/splash/";
 	private String pathGfxGame = "gfx/game/";
-	private String pathGfxMenu = "gfx/menu/";
+	private String pathGfxMainMenu = "gfx/menu/main/";
+	private String pathGfxPauseMenu = "gfx/menu/pause/";
+	private String pathGfxQuitMenu = "gfx/menu/quit/";
 
 	private String pathSfxGame = "sfx/game/";
 	private String pathSfxMenu = "sfx/menu/";
@@ -71,8 +73,9 @@ public class ResourceManager {
 
 	public ITextureRegion mMenuBgTR;
 	public ITextureRegion mMenuPlayTR;
-	public ITextureRegion mMenuOptionsTR;
-	public ITextureRegion mMenuLogoTR;
+	public ITextureRegion mMenuSettingsTR;
+	// public ITextureRegion mMenuLogoTR;
+	public ITextureRegion mMenuCreditsTR;
 
 	public ITextureRegion mGameBgTR;
 	public ITextureRegion mEggTR;
@@ -124,7 +127,7 @@ public class ResourceManager {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(pathGfxSplash);
 
 		BuildableBitmapTextureAtlas mSplashTA = new BuildableBitmapTextureAtlas(
-				texManager, 512, 512);
+				texManager, 512, 256);
 		mSplashTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				mSplashTA, activity, "splash.png");
 		try {
@@ -153,18 +156,21 @@ public class ResourceManager {
 
 	// ---- MENU ----
 	public void loadMenuTextures() {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(pathGfxMenu);
+		BitmapTextureAtlasTextureRegionFactory
+				.setAssetBasePath(pathGfxMainMenu);
 		BuildableBitmapTextureAtlas mMenuTA = new BuildableBitmapTextureAtlas(
 				texManager, 512, 1024);
 
-		mMenuLogoTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				mMenuTA, activity, "logo.png");
+		// mMenuLogoTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+		// mMenuTA, activity, "logo.png");
 		mMenuBgTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				mMenuTA, activity, "bg.png");
+				mMenuTA, activity, "bg-logo.png");
 		mMenuPlayTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				mMenuTA, activity, "play.png");
-		mMenuOptionsTR = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(mMenuTA, activity, "options.png");
+		mMenuSettingsTR = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(mMenuTA, activity, "settings.png");
+		mMenuCreditsTR = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(mMenuTA, activity, "credits.png");
 
 		try {
 			mMenuTA.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
@@ -177,12 +183,12 @@ public class ResourceManager {
 	}
 
 	public void unloadMenuTextures() {
-		BuildableBitmapTextureAtlas mMenuTA = (BuildableBitmapTextureAtlas) mMenuPlayTR
+		BuildableBitmapTextureAtlas mMenuTA = (BuildableBitmapTextureAtlas) mMenuBgTR
 				.getTexture();
 		mMenuTA.unload();
 
-		mMenuTA = (BuildableBitmapTextureAtlas) mMenuOptionsTR.getTexture();
-		mMenuTA.unload();
+		// mMenuTA = (BuildableBitmapTextureAtlas) mMenuSettingsTR.getTexture();
+		// mMenuTA.unload();
 
 		System.gc();
 	}
@@ -200,8 +206,8 @@ public class ResourceManager {
 		final ITexture mFontTA = new BitmapTextureAtlas(texManager, 256, 256);
 
 		mFont = FontFactory.createStrokeFromAsset(activity.getFontManager(),
-				mFontTA, activity.getAssets(), "font.ttf", 50, true,
-				Color.GRAY, 2, Color.BLACK);
+				mFontTA, activity.getAssets(), "CarterOne.ttf", 30, true,
+				Color.YELLOW, 1, Color.RED);
 		mFont.load();
 	}
 
@@ -217,7 +223,7 @@ public class ResourceManager {
 
 		// load textures
 		BuildableBitmapTextureAtlas mGameTA = new BuildableBitmapTextureAtlas(
-				texManager, 480, 640);
+				texManager, 512, 1024);
 		mGameBgTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				mGameTA, activity, "bg.png");
 		mNestTR = BitmapTextureAtlasTextureRegionFactory.createFromAsset(

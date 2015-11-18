@@ -2,6 +2,8 @@ package com.pike.games.scenes;
 
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.util.adt.color.Color;
+
 import com.pike.games.eggs.BaseScene;
 import com.pike.games.managers.SceneManager.SceneType;
 
@@ -12,10 +14,9 @@ public class SplashScene extends BaseScene {
 	@Override
 	public void createScene() {
 
-		this.setBackground(new Background(0.09804f, 0.6274f, 0));
+		this.setBackground(new Background(Color.CYAN));
 		splash = new Sprite(0, 0, mResourceManager.mSplashTR, mVboManager);
 		splash.setPosition(200, 400);
-		splash.setScale(1.5625f);
 		this.attachChild(splash);
 	}
 
