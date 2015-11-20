@@ -1,11 +1,14 @@
 package com.pike.games.menus;
 
+import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.util.adt.color.Color;
 
 import android.util.Log;
 
@@ -92,8 +95,15 @@ public class PauseMenu extends GameScene {
 	@Override
 	public void createScene() {
 		this.setBackgroundEnabled(false);
+		// this.setBackground(new Background(0.5f, 0.5f, 0.5f, 0.5f));
+		Rectangle bg = new Rectangle(200, 320, 400, 640, ResourceManager
+				.getInstance().getVertexBufferObjectManager());
+		// bg.setColor(Color.BLACK_ABGR_PACKED_INT);
+		bg.setColor(Color.BLACK);
+		bg.setAlpha(0.5f);
+
+		attachChild(bg);
 		attachPauseMenuBoard();
 		attachButtons();
 	}
-
 }
