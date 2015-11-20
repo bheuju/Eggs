@@ -12,10 +12,13 @@ import android.util.Log;
 import com.pike.games.eggs.BaseScene;
 import com.pike.games.managers.SceneManager;
 import com.pike.games.managers.SceneManager.SceneType;
+import com.pike.games.menus.QuitMenu;
 
 public class MainMenuScene extends BaseScene {
 
-	private MenuScene menuChildScene;
+	// public static MainMenuScene menuScene = this;
+
+	protected MenuScene menuChildScene;
 	private final int MENU_PLAY = 0;
 	private final int MENU_SETTINGS = 1;
 	private final int MENU_CREDITS = 2;
@@ -27,7 +30,7 @@ public class MainMenuScene extends BaseScene {
 		this.attachChild(bg);
 	}
 
-	private void createMenuChildScene() {
+	public void createMenuChildScene() {
 		menuChildScene = new MenuScene(mCamera);
 		menuChildScene.setPosition(0, 0);
 
@@ -96,7 +99,11 @@ public class MainMenuScene extends BaseScene {
 
 	@Override
 	public void onBackKeyPressed() {
-		System.exit(0);
+
+		// setChildScene(new QuitMenu(), false, true, true);
+		setChildScene(new QuitMenu());
+
+		// System.exit(0);
 	}
 
 	@Override

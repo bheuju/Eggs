@@ -83,6 +83,10 @@ public class ResourceManager {
 	public ITextureRegion mPauseMenuPlayButtonTR;
 	public ITextureRegion mPauseMenuReloadButtonTR;
 	public ITextureRegion mPauseMenuMenuButtonTR;
+	// quit menu
+	public ITextureRegion mQuitMenuBoardTR;
+	public ITextureRegion mQuitMenuAcceptButtonTR;
+	public ITextureRegion mQuitMenuRejectButtonTR;
 	// game
 	public ITextureRegion mGameBgTR;
 	public ITextureRegion mEggTR;
@@ -187,6 +191,40 @@ public class ResourceManager {
 			e.printStackTrace();
 		}
 
+		// load quit menu textures
+		loadQuitMenuTextures();
+
+	}
+
+	public void loadQuitMenuTextures() {
+		// pause menu textures
+		BitmapTextureAtlasTextureRegionFactory
+				.setAssetBasePath(pathGfxQuitMenu);
+
+		BuildableBitmapTextureAtlas mQuitMenuTA = new BuildableBitmapTextureAtlas(
+				texManager, 512, 256);
+		mQuitMenuBoardTR = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(mQuitMenuTA, activity, "quit-menu-board.png");
+		mQuitMenuAcceptButtonTR = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(mQuitMenuTA, activity, "accept.png");
+		mQuitMenuRejectButtonTR = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(mQuitMenuTA, activity, "reject.png");
+
+		try {
+			mQuitMenuTA
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 1));
+			mQuitMenuTA.load();
+		} catch (TextureAtlasBuilderException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void unloadQuitMenuTextures() {
+		BuildableBitmapTextureAtlas mQuitMenuTA = (BuildableBitmapTextureAtlas) mQuitMenuBoardTR
+				.getTexture();
+		mQuitMenuTA.unload();
 	}
 
 	public void unloadMenuTextures() {
@@ -196,6 +234,8 @@ public class ResourceManager {
 
 		// mMenuTA = (BuildableBitmapTextureAtlas) mMenuSettingsTR.getTexture();
 		// mMenuTA.unload();
+
+		// unload quitmenu textures
 
 		System.gc();
 	}
@@ -248,6 +288,12 @@ public class ResourceManager {
 			e.printStackTrace();
 		}
 
+		// load pause menu
+		loadPauseMenuTextures();
+
+	}
+
+	public void loadPauseMenuTextures() {
 		// pause menu textures
 		BitmapTextureAtlasTextureRegionFactory
 				.setAssetBasePath(pathGfxPauseMenu);
