@@ -1,6 +1,6 @@
 package com.pike.games.eggs;
 
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -11,7 +11,7 @@ public abstract class BaseScene extends Scene {
 
 	protected ResourceManager mResourceManager;
 	protected VertexBufferObjectManager mVboManager;
-	protected Camera mCamera;
+	protected BoundCamera mCamera;
 	protected GameActivity mActivity;
 
 	public BaseScene() {

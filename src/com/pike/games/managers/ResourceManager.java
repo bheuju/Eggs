@@ -7,6 +7,7 @@ import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -16,13 +17,11 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import android.app.Activity;
 import android.graphics.Color;
 
 import com.pike.games.eggs.GameActivity;
@@ -52,7 +51,7 @@ public class ResourceManager {
 
 	private GameActivity activity;
 	private Engine engine;
-	private Camera camera;
+	private BoundCamera camera;
 
 	private TextureManager texManager;
 	private VertexBufferObjectManager vboManager;
@@ -104,7 +103,7 @@ public class ResourceManager {
 	 * @param camera
 	 * 
 	 */
-	public void setup(GameActivity activity, Engine engine, Camera camera) {
+	public void setup(GameActivity activity, Engine engine, BoundCamera camera) {
 		this.activity = activity;
 		this.engine = engine;
 		this.camera = camera;
@@ -387,7 +386,7 @@ public class ResourceManager {
 		return vboManager;
 	}
 
-	public Camera getCamera() {
+	public BoundCamera getCamera() {
 		return camera;
 	}
 

@@ -2,6 +2,7 @@ package com.pike.games.menus;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.menu.MenuScene;
+import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
@@ -10,33 +11,19 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import android.util.Log;
 
+import com.pike.games.eggs.BaseMenuScene;
 import com.pike.games.eggs.GameActivity;
 import com.pike.games.managers.ResourceManager;
 import com.pike.games.scenes.MainMenuScene;
 
-public class QuitMenu extends MenuScene {
-
-	protected ResourceManager mResourceManager;
-	protected VertexBufferObjectManager mVboManager;
-	protected Camera mCamera;
-	protected GameActivity mActivity;
+public class QuitMenu extends BaseMenuScene {
 
 	public QuitMenu() {
-		super(ResourceManager.getInstance().getCamera());
-
-		this.mResourceManager = ResourceManager.getInstance();
-		this.mVboManager = ResourceManager.getInstance()
-				.getVertexBufferObjectManager();
-		this.mCamera = ResourceManager.getInstance().getCamera();
-		this.mActivity = ResourceManager.getInstance().getActivity();
-		// createScene();
-
 		attachPauseMenuBoard();
 		attachButtons();
 	}
 
 	// private MenuScene quitMenuScene;
-
 	private final int BUTTON_ACCEPT = 0;
 	private final int BUTTON_REJECT = 1;
 

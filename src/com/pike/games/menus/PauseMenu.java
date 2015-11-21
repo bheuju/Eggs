@@ -1,25 +1,41 @@
 package com.pike.games.menus;
 
+import org.andengine.engine.camera.Camera;
 import org.andengine.entity.primitive.Rectangle;
-import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.color.Color;
 
 import android.util.Log;
 
+import com.pike.games.eggs.BaseMenuScene;
+import com.pike.games.eggs.GameActivity;
 import com.pike.games.managers.ResourceManager;
 import com.pike.games.managers.SceneManager;
-import com.pike.games.managers.SceneManager.SceneType;
-import com.pike.games.scenes.GameScene;
 
-public class PauseMenu extends GameScene {
+public class PauseMenu extends BaseMenuScene {
 
-	private MenuScene pauseMenuScene;
+	public PauseMenu() {
+		// this.setBackgroundEnabled(false);
+		// Rectangle bg = new Rectangle(200, 320, 400, 640, ResourceManager
+		// .getInstance().getVertexBufferObjectManager());
+		// bg.setColor(Color.BLACK);
+		// bg.setAlpha(0.5f);
+		//
+		// attachChild(bg);
+		// attachPauseMenuBoard();
+		// attachButtons();
+
+		attachPauseMenuBoard();
+		attachButtons();
+	}
+
+	// private MenuScene pauseMenuScene;
 
 	private final int BUTTON_PLAY = 0;
 	private final int BUTTON_RELOAD = 1;
@@ -32,9 +48,10 @@ public class PauseMenu extends GameScene {
 	}
 
 	private void attachButtons() {
-		pauseMenuScene = new MenuScene(ResourceManager.getInstance()
-				.getCamera());
-		pauseMenuScene.setPosition(0, 230);
+		// pauseMenuScene = new MenuScene(ResourceManager.getInstance()
+		// .getCamera());
+		// pauseMenuScene.
+		setPosition(0, 0);
 
 		final IMenuItem playMenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(BUTTON_PLAY,
@@ -49,61 +66,66 @@ public class PauseMenu extends GameScene {
 						mResourceManager.mPauseMenuMenuButtonTR, mVboManager),
 				0.8f, 1f);
 
-		pauseMenuScene.addMenuItem(playMenuItem);
-		pauseMenuScene.addMenuItem(reloadMenuItem);
-		pauseMenuScene.addMenuItem(menuMenuItem);
+		// pauseMenuScene.addMenuItem(playMenuItem);
+		// pauseMenuScene.addMenuItem(reloadMenuItem);
+		// pauseMenuScene.addMenuItem(menuMenuItem);
+		addMenuItem(playMenuItem);
+		addMenuItem(reloadMenuItem);
+		addMenuItem(menuMenuItem);
 
-		pauseMenuScene.buildAnimations();
-		pauseMenuScene.setBackgroundEnabled(false);
+		// pauseMenuScene.buildAnimations();
+		// pauseMenuScene.setBackgroundEnabled(false);
+		buildAnimations();
+		setBackgroundEnabled(false);
 
-		playMenuItem.setPosition(95, 70);
-		reloadMenuItem.setPosition(196, 70);
-		menuMenuItem.setPosition(302, 70);
+		playMenuItem.setPosition(95 + 4, 70 + 230);
+		reloadMenuItem.setPosition(196 + 4, 70 + 230);
+		menuMenuItem.setPosition(302 + 4, 70 + 230);
 
-		pauseMenuScene
-				.setOnMenuItemClickListener(new IOnMenuItemClickListener() {
+		// pauseMenuScene.
+		setOnMenuItemClickListener(new IOnMenuItemClickListener() {
 
-					@Override
-					public boolean onMenuItemClicked(MenuScene pMenuScene,
-							IMenuItem pMenuItem, float pMenuItemLocalX,
-							float pMenuItemLocalY) {
+			@Override
+			public boolean onMenuItemClicked(MenuScene pMenuScene,
+					IMenuItem pMenuItem, float pMenuItemLocalX,
+					float pMenuItemLocalY) {
 
-						switch (pMenuItem.getID()) {
-						case BUTTON_PLAY:
-							Log.e("Pause Menu item clicked: ", "PLAY");
-							back();
-							return true;
-						case BUTTON_RELOAD:
-							Log.e("Pause Menu item clicked: ", "RELOAD");
-							resetGame();
-							return true;
-						case BUTTON_MENU:
-							Log.e("Pause Menu item clicked: ", "MENU");
-							SceneManager.getInstance().loadMenuScene();
-							return true;
-						default:
-							return false;
-						}
+				switch (pMenuItem.getID()) {
+				case BUTTON_PLAY:
+					Log.e("Pause Menu item clicked: ", "PLAY");
+					back();
+					return true;
+				case BUTTON_RELOAD:
+					Log.e("Pause Menu item clicked: ", "RELOAD");
+					// resetGame();
+					return true;
+				case BUTTON_MENU:
+					Log.e("Pause Menu item clicked: ", "MENU");
+					SceneManager.getInstance().loadMenuScene();
+					return true;
+				default:
+					return false;
+				}
 
-					}
-				});
+			}
+		});
 
-		setChildScene(pauseMenuScene);
+		// setChildScene(pauseMenuScene);
 
 	}
 
-	@Override
-	public void createScene() {
-		this.setBackgroundEnabled(false);
-		// this.setBackground(new Background(0.5f, 0.5f, 0.5f, 0.5f));
-		Rectangle bg = new Rectangle(200, 320, 400, 640, ResourceManager
-				.getInstance().getVertexBufferObjectManager());
-		// bg.setColor(Color.BLACK_ABGR_PACKED_INT);
-		bg.setColor(Color.BLACK);
-		bg.setAlpha(0.5f);
-
-		attachChild(bg);
-		attachPauseMenuBoard();
-		attachButtons();
-	}
+	// @Override
+	// public void createScene() {
+	// this.setBackgroundEnabled(false);
+	// // this.setBackground(new Background(0.5f, 0.5f, 0.5f, 0.5f));
+	// Rectangle bg = new Rectangle(200, 320, 400, 640, ResourceManager
+	// .getInstance().getVertexBufferObjectManager());
+	// // bg.setColor(Color.BLACK_ABGR_PACKED_INT);
+	// bg.setColor(Color.BLACK);
+	// bg.setAlpha(0.5f);
+	//
+	// attachChild(bg);
+	// attachPauseMenuBoard();
+	// attachButtons();
+	// }
 }

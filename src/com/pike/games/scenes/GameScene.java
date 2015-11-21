@@ -56,6 +56,8 @@ public class GameScene extends BaseScene {
 	// private Body nestBody;
 	Sprite eggSprite;
 
+	private boolean isEggJumping = false;
+
 	// Level Loader tags
 	private static final String TAG_ENTITY = "entity";
 	private static final String TAG_ENTITY_ATTRIBUTE_X = "x";
@@ -115,6 +117,9 @@ public class GameScene extends BaseScene {
 						final int height = SAXUtils.getIntAttributeOrThrow(
 								pAttributes,
 								LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
+
+						mCamera.setBounds(0, 0, width, 1000);
+						mCamera.setBoundsEnabled(true);
 
 						return GameScene.this;
 					}
@@ -385,6 +390,8 @@ public class GameScene extends BaseScene {
 		createPhysics();
 		loadLevel(1);
 		sortChildren();
+
+		mCamera.setChaseEntity(eggSprite);
 	}
 
 	@Override

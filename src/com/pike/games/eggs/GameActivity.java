@@ -3,9 +3,9 @@ package com.pike.games.eggs;
 import java.io.IOException;
 
 import org.andengine.audio.music.Music;
-
 import org.andengine.engine.Engine;
 import org.andengine.engine.FixedStepEngine;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -15,11 +15,11 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import com.pike.games.managers.ResourceManager;
-import com.pike.games.managers.SceneManager;
-
 import android.util.Log;
 import android.view.KeyEvent;
+
+import com.pike.games.managers.ResourceManager;
+import com.pike.games.managers.SceneManager;
 
 // Main Activity for the game
 
@@ -28,7 +28,7 @@ public class GameActivity extends BaseGameActivity {
 	private final int CAMERA_WIDTH = 400;
 	private final int CAMERA_HEIGHT = 640;
 
-	private Camera mCamera;
+	private BoundCamera mCamera;
 	private Scene mScene;
 
 	// =========== CREATE ENGINE ===========
@@ -42,7 +42,7 @@ public class GameActivity extends BaseGameActivity {
 	public EngineOptions onCreateEngineOptions() {
 
 		// define camera object
-		mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 
 		// define engine options to be applied to engine object
 		EngineOptions engineOptions = new EngineOptions(true,
