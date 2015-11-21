@@ -6,7 +6,6 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
-
 import android.util.Log;
 
 import com.pike.games.eggs.BaseScene;

@@ -118,7 +118,7 @@ public class GameScene extends BaseScene {
 								pAttributes,
 								LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
 
-						mCamera.setBounds(0, 0, width, 1000);
+						mCamera.setBounds(0, 0, width, height);
 						mCamera.setBoundsEnabled(true);
 
 						return GameScene.this;
@@ -248,6 +248,7 @@ public class GameScene extends BaseScene {
 					Log.d("Game Condition", "GAME IS OVER :(");
 				}
 				super.onManagedUpdate(pSecondsElapsed);
+
 			}
 		};
 		eggBody = PhysicsFactory.createCircleBody(mPhysicsWorld, eggSprite,
@@ -381,6 +382,16 @@ public class GameScene extends BaseScene {
 
 	private void createBackGround() {
 		setBackground(new Background(Color.CYAN));
+	}
+
+	public void exitGameScene() {
+
+		mCamera.setChaseEntity(null);
+		mCamera.setCenter(200, 320);
+
+		// Log.e("Camera", mCamera.getCenterX() + " : " + mCamera.getCenterY());
+
+		SceneManager.getInstance().loadMenuScene();
 	}
 
 	@Override

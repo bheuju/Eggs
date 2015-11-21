@@ -1,6 +1,6 @@
 package com.pike.games.eggs;
 
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -12,7 +12,7 @@ public class BaseMenuScene extends MenuScene {
 
 	protected ResourceManager mResourceManager;
 	protected VertexBufferObjectManager mVboManager;
-	protected Camera mCamera;
+	protected BoundCamera mCamera;
 	protected GameActivity mActivity;
 
 	public BaseMenuScene() {
