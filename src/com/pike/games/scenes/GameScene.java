@@ -176,42 +176,52 @@ public class GameScene extends BaseScene {
 
 						levelObjectBody.setLinearVelocity(nestVelocity, 0f);
 
-						if (scroll) {
+						levelObject.registerUpdateHandler(new IUpdateHandler() {
 
-							levelObject
-									.registerUpdateHandler(new IUpdateHandler() {
+							@Override
+							public void reset() {
+								// TODO Auto-generated method stub
 
-										@Override
-										public void reset() {
-											// TODO Auto-generated method stub
+							}
 
-										}
+							@Override
+							public void onUpdate(float pSecondsElapsed) {
 
-										@Override
-										public void onUpdate(
-												float pSecondsElapsed) {
+								if (scroll) {
 
-											if (levelObject.getX() > 350) {
-												levelObjectBody
-														.setLinearVelocity(
-																-nestVelocity,
-																0f);
-											} else if (levelObject.getX() < 50) {
-												levelObjectBody
-														.setLinearVelocity(
-																nestVelocity,
-																0f);
-											}
+									if (levelObject.getX() > 350) {
+										levelObjectBody.setLinearVelocity(
+												-nestVelocity, 0f);
+									} else if (levelObject.getX() < 50) {
+										levelObjectBody.setLinearVelocity(
+												nestVelocity, 0f);
+									}
 
-											nestFrontSprite.setPosition(
-													levelObject.getX(),
-													levelObject.getY());
+									nestFrontSprite.setPosition(
+											levelObject.getX(),
+											levelObject.getY());
+								} else {
+									levelObjectBody.setLinearVelocity(0f, 0f);
+								}
 
-										}
-									});
-						} else {
-							levelObjectBody.setLinearVelocity(0f, 0f);
-						}
+								if (eggBody.getLinearVelocity().y > 0) {
+									// if egg moving up, disable collision
+									for (int i = 0; i < levelObjectBody
+											.getFixtureList().size(); i++) {
+										levelObjectBody.getFixtureList().get(i)
+												.setSensor(true);
+									}
+								} else {
+									// if egg moving down, enable collision
+									for (int i = 0; i < levelObjectBody
+											.getFixtureList().size(); i++) {
+										levelObjectBody.getFixtureList().get(i)
+												.setSensor(false);
+									}
+								}
+
+							}
+						});
 
 						levelObject.setCullingEnabled(true);
 
